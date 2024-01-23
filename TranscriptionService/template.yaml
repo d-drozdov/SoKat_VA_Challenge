@@ -1,38 +1,76 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-Description: Summarize and transcribe clinical encounter mp3 files 
-
-# Figure out how to add api gateway and another roles
+Description: Summarize and transcribe clinical encounter mp3 files
 
 Resources:
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: API Gateway
+      StageName: Dev
+      Cors: "'*'"
+      Auth:
+          ApiKeyRequired: false
+      
+  
+  TransriberFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/transcriber
+      Handler: transcriber.lambda_handler
+      Runtime: python3.9
+      Events:
+        UploadMP3:
+          Type: Api
+          Properties:
+            Path: /upload
+            Method: post
+            RestApiId:
+              Ref: ApiGateway
+  
+  SummarizerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/summarizer
+      Handler: summarizer.lambda_handler
+      Runtime: python3.9
+  
   SummarizeTranscibeStateMachine:
-    Type: AWS::Serverless::StateMachine # More info about State Machine Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-statemachine.html
+    Type: AWS::Serverless::StateMachine
     Properties:
       DefinitionUri: statemachine/transcibe_summarize.asl.json
       DefinitionSubstitutions:
         SummarizerFunctionArn: !GetAtt SummarizerFunction.Arn
         TransriberFunctionArn: !GetAtt TransriberFunction.Arn
-
-  
-      Policies: # Find out more about SAM policy templates: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+      Policies:
         - LambdaInvokePolicy:
             FunctionName: !Ref SummarizerFunction
         - LambdaInvokePolicy:
             FunctionName: !Ref TransriberFunction
-
-  SummarizerFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
+  
+  StateMachineRole:
+    Type: AWS::IAM::Role
     Properties:
-      CodeUri: functions/summarizer/
-      Handler: summarizer.lambda_handler
-      Runtime: python3.9
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - states.amazonaws.com
+            Action: "sts:AssumeRole"
+      Policies:
+        - PolicyName: StateMachineLambdaPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: "lambda:InvokeFunction"
+                Resource:
+                  - !GetAtt SummarizerFunction.Arn
+                  - !GetAtt TransriberFunction.Arn
 
-  TransriberFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: functions/transcriber/
-      Handler: transciber.lambda_handler
-      Runtime: python3.9
-
-
-
+Outputs:
+  ApiGateway:
+    Description: 'API Gateway endpoint URL for Dev stage for Hello World function'
+    Value: !Sub 'https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/Dev/upload/'
