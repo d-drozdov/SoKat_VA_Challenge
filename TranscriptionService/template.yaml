@@ -1,7 +1,8 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-Description: >
-  Summarize and transcribe clinical encounter mp3 files 
+Description: Summarize and transcribe clinical encounter mp3 files 
+
+# Figure out how to add api gateway and another roles
 
 Resources:
   SummarizeTranscibeStateMachine:
@@ -34,4 +35,4 @@ Resources:
       Runtime: python3.9
 
 
-Outputs:
+
