@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Summarize and transcribe clinical encounter mp3 files 
+
+Resources:
+  SummarizeTranscibeStateMachine:
+    Type: AWS::Serverless::StateMachine # More info about State Machine Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-statemachine.html
+    Properties:
+      DefinitionUri: statemachine/transcibe_summarize.asl.json
+      DefinitionSubstitutions:
+        SummarizerFunctionArn: !GetAtt SummarizerFunction.Arn
+        TransriberFunctionArn: !GetAtt TransriberFunction.Arn
+
+  
+      Policies: # Find out more about SAM policy templates: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+        - LambdaInvokePolicy:
+            FunctionName: !Ref SummarizerFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref TransriberFunction
+
+  SummarizerFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
+    Properties:
+      CodeUri: functions/summarizer/
+      Handler: summarizer.lambda_handler
+      Runtime: python3.9
+
+  TransriberFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/transcriber/
+      Handler: transciber.lambda_handler
+      Runtime: python3.9
+
+
+Outputs:

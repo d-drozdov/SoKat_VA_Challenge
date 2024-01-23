@@ -1,0 +1,56 @@
+{
+  "Comment": "An AWS Step Function State Machine for processing audio files with API Gateway integration, returning transcription and summary.",
+  "StartAt": "UploadMP3",
+  "States": {
+    "UploadMP3": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::apigateway:invoke",
+      "Parameters": {
+        "ApiEndpoint": "api-id.execute-api.region.amazonaws.com",
+        "Method": "POST",
+        "Stage": "dev",
+        "Path": "/upload",
+        "RequestBody": {
+          "input": "$"
+        },
+        "AuthType": "NO_AUTH"
+      },
+      "Next": "Transcription"
+    },
+    "Transcription": {
+      "Type": "Task",
+      "Resource": "${TranscribeFunctionArn}",
+      "Next": "TranscriptionCheck"
+    },
+    "TranscriptionCheck": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.transcriptionResult.statusCode",
+          "NumericEquals": 200,
+          "Next": "Summary"
+        }
+      ],
+      "Default": "Fail"
+    },
+    "Summary": {
+      "Type": "Task",
+      "Resource": "${SummarizeFunctionArn}",
+      "Next": "ReturnResults"
+    },
+    "ReturnResults": {
+      "Type": "Pass",
+      "Result": {
+        "Transcription": "$.transcriptionResult.transcript",
+        "Summary": "$.summaryResult.summary"
+      },
+      "ResultPath": "$.finalOutput",
+      "End": true
+    },
+    "Fail": {
+      "Type": "Fail",
+      "Error": "ProcessFailed",
+      "Cause": "Transcription or Summary Failed"
+    }
+  }
+}
