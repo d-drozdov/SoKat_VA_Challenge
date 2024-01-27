@@ -1,20 +1,24 @@
-import type { WithAuthenticatorProps } from "@aws-amplify/ui-react";
-import { withAuthenticator } from "@aws-amplify/ui-react";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-import { Amplify } from "aws-amplify";
 
-import awsconfig from "./aws-exports.js";
+import SignInButton from "./components/signIn";
 
-Amplify.configure(awsconfig);
-
-export function App({ signOut, user }: WithAuthenticatorProps) {
+function App() {
+    const { user, signOut, authStatus } = useAuthenticator((context) => [
+        context.user,
+        context.authStatus,
+    ]);
     return (
-        <>
-            <h1>Hello {user?.username}</h1>
-            <button onClick={signOut}>Sign out</button>
-        </>
+        <div>
+            <SignInButton />
+            {authStatus == "authenticated" && (
+                <>
+                    <h1>Hello {user?.username}</h1>
+                    <button onClick={signOut}>Sign out</button>
+                </>
+            )}
+        </div>
     );
 }
 
-const AppWithAuthenticator = withAuthenticator(App);
-export default AppWithAuthenticator;
+export default App;

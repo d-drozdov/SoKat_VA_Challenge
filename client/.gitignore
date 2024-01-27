@@ -23,8 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-**/aws-exports.js
-```
+
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
