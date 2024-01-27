@@ -1,22 +1,20 @@
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import type { WithAuthenticatorProps } from "@aws-amplify/ui-react";
+import { withAuthenticator } from "@aws-amplify/ui-react";
+import "@aws-amplify/ui-react/styles.css";
+import { Amplify } from "aws-amplify";
 
-function App() {
-    const [count, setCount] = useState(0);
+import awsconfig from "./aws-exports.js";
 
+Amplify.configure(awsconfig);
+
+export function App({ signOut, user }: WithAuthenticatorProps) {
     return (
         <>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <Button
-                    className="rounded bg-blue-500 px-4  py-2 font-bold text-white hover:bg-blue-700"
-                    onClick={() => setCount((count) => count + 1)}
-                >
-                    count is {count}
-                </Button>
-            </div>
+            <h1>Hello {user?.username}</h1>
+            <button onClick={signOut}>Sign out</button>
         </>
     );
 }
 
-export default App;
+const AppWithAuthenticator = withAuthenticator(App);
+export default AppWithAuthenticator;

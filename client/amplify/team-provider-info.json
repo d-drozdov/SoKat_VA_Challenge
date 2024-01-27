@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-sokatvachallenge-dev-214847-authRole",
+      "UnauthRoleArn": "arn:aws:iam::851725617932:role/amplify-sokatvachallenge-dev-214847-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::851725617932:role/amplify-sokatvachallenge-dev-214847-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-sokatvachallenge-dev-214847-deployment",
+      "UnauthRoleName": "amplify-sokatvachallenge-dev-214847-unauthRole",
+      "StackName": "amplify-sokatvachallenge-dev-214847",
+      "StackId": "arn:aws:cloudformation:us-east-1:851725617932:stack/amplify-sokatvachallenge-dev-214847/990a9600-bcbe-11ee-a174-0e5fef07e549",
+      "AmplifyAppId": "d2f4i9nkvu9b23"
+    },
+    "categories": {
+      "auth": {
+        "sokatvachallenge4ff9e99f": {}
+      }
+    }
+  }
+}
