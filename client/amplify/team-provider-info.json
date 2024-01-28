@@ -1,19 +1,25 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-sokatvachallenge-dev-214847-authRole",
-      "UnauthRoleArn": "arn:aws:iam::851725617932:role/amplify-sokatvachallenge-dev-214847-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::851725617932:role/amplify-sokatvachallenge-dev-214847-authRole",
+      "AuthRoleName": "amplify-sokatvachallenge-dev-150005-authRole",
+      "UnauthRoleArn": "arn:aws:iam::932241639338:role/amplify-sokatvachallenge-dev-150005-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::932241639338:role/amplify-sokatvachallenge-dev-150005-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-sokatvachallenge-dev-214847-deployment",
-      "UnauthRoleName": "amplify-sokatvachallenge-dev-214847-unauthRole",
-      "StackName": "amplify-sokatvachallenge-dev-214847",
-      "StackId": "arn:aws:cloudformation:us-east-1:851725617932:stack/amplify-sokatvachallenge-dev-214847/990a9600-bcbe-11ee-a174-0e5fef07e549",
-      "AmplifyAppId": "d2f4i9nkvu9b23"
+      "DeploymentBucketName": "amplify-sokatvachallenge-dev-150005-deployment",
+      "UnauthRoleName": "amplify-sokatvachallenge-dev-150005-unauthRole",
+      "StackName": "amplify-sokatvachallenge-dev-150005",
+      "StackId": "arn:aws:cloudformation:us-east-1:932241639338:stack/amplify-sokatvachallenge-dev-150005/d5c09f40-be17-11ee-bffc-0e0edd93280b",
+      "AmplifyAppId": "d1jxt6zvy3ftn1"
     },
     "categories": {
       "auth": {
-        "sokatvachallenge4ff9e99f": {}
+        "sokatvachallenge0488bae4": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d1jxt6zvy3ftn1",
+          "type": "manual"
+        }
       }
     }
   }

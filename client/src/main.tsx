@@ -10,9 +10,9 @@ import "./index.css";
 Amplify.configure(awsconfig);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
-        <Authenticator.Provider>
+    <Authenticator.Provider>
+        {/* <React.StrictMode> */}
             <App />
-        </Authenticator.Provider>
-    </React.StrictMode>,
+        {/* </React.StrictMode> */}
+    </Authenticator.Provider>,
 );
