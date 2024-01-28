@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { signOut } from "@aws-amplify/auth";
 import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react";
 import { useEffect, useState } from "react";
 
@@ -20,16 +21,19 @@ const AuthComponents = (props: {
 
 const AuthButton = () => {
     const [showAuthenticator, setShowAuthenticator] = useState(false);
-    const { authStatus, signOut } = useAuthenticator((context) => [
-        context.authStatus,
-        context.user,
-    ]);
+    const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
     useEffect(() => {
         if (authStatus === "authenticated") {
             setShowAuthenticator(false);
         }
     }, [authStatus]);
+
+    const handleSignOut = () => {
+        signOut().catch((error) => {
+            console.error("Error signing out", error);
+        });
+    };
 
     if (showAuthenticator && authStatus === "unauthenticated") {
         return <AuthComponents setShowAuthenticator={setShowAuthenticator} />;
@@ -41,7 +45,7 @@ const AuthButton = () => {
         );
     }
 
-    return <Button onClick={() => signOut()}>Sign Out</Button>;
+    return <Button onClick={handleSignOut}>Sign Out</Button>;
 };
 
 export default AuthButton;

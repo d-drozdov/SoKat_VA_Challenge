@@ -11,8 +11,8 @@ Amplify.configure(awsconfig);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <Authenticator.Provider>
-        {/* <React.StrictMode> */}
+        <React.StrictMode>
             <App />
-        {/* </React.StrictMode> */}
-    </Authenticator.Provider>,
+        </React.StrictMode>
+    </Authenticator.Provider>
 );
