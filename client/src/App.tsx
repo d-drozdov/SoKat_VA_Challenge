@@ -4,6 +4,8 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 // Corrected import
 import { useEffect, useState } from "react";
 
+import AudioRecorder from "./components/audioRecorder";
+
 function App() {
     const { authStatus } = useAuthenticator((context) => [context.authStatus]);
 
@@ -36,6 +38,7 @@ function App() {
                     <p className="text-lg font-semibold">
                         You have successfully logged into our app!
                     </p>
+                    <AudioRecorder />
                 </div>
             )}
         </main>
